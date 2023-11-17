@@ -166,6 +166,8 @@ for bar in bars.patches:
 plt.show()
 
 
+# The graph above shows different types of natural disasters that can be classified as major dasters. For the purpose of this assignment we will be focusing on using the Severe Storm column due to having the biggest number of major natural disasters. I used a bar chart to easily show the numbers.
+
 # In[45]:
 
 
@@ -216,6 +218,8 @@ plt.tight_layout()
 plt.show()
 
 
+# For this chart I wanted to go even further and break down what is all considered in a "Severe Storm". Due to the fact that there is a large amount of sub classes in Severe Storms I decided to do the top 10. I chose a histogram because it suits the type of data I wish to display.
+
 # In[98]:
 
 
@@ -254,11 +258,47 @@ plt.tight_layout()  # Adjust layout to prevent clipping of labels
 plt.show()
 
 
+# For this graph I planned on doing a map chart to show all the cites and states that had a report of severe storms. Sadly I could not figure out the code for it so I decided to do the next best thing, a Pie Chart!! I the orignal design I had all 50 US staes to show how many cites where effected by these storms. Sadly the number of states would block numbers and make it much harder to read and understand. To fix this I did the top 25 and I think it looks much better. Looking at the chart we can see that AL "Alabama" has had the highest number of severe storms, we will be using them for the next graph.
+
+# In[111]:
+
+
+import matplotlib.pyplot as plt
+
+# Filter the merged data for 'Severe Storm(s)' in Alabama
+severe_storm_AL = merged_data_inner[(merged_data_inner['incidentType'] == 'Severe Storm') & (merged_data_inner['state_x'] == 'AL')]
+
+# Count the occurrences of each propertyAction in Alabama for severe storm incidents
+property_action_counts_AL = severe_storm_AL['propertyAction'].value_counts()
+
+# Remove 'Other' from the propertyAction counts
+property_action_counts_AL = property_action_counts_AL[property_action_counts_AL.index != 'Other (Specify in Comments)']
+
+# Convert the categorical data to numeric indices for a histogram-like visualization
+action_indices = range(len(property_action_counts_AL))
+
+plt.figure(figsize=(10, 6))
+plt.bar(action_indices, property_action_counts_AL, color='skyblue', width=0.5)
+plt.title('Property Actions in Alabama for Severe Storm Incidents (Excluding "Other (Specify in Comments)")')
+plt.xlabel('Property Action')
+plt.ylabel('Count')
+plt.xticks(action_indices, property_action_counts_AL.index, rotation=45)
+plt.tight_layout()
+
+# Annotate each bar with its count
+for i, count in enumerate(property_action_counts_AL):
+    plt.text(i, count, f'{count}', ha='center', va='bottom')
+
+plt.show()
+
+
+# This chart shows that the best migitiation method for the state of Alabama is to have a safe room/wind shelter. I had a hard time trying the other migitation methods to show up. To anwser my question above, it would appear to be that the Safe room migation method would appear to be the best method one can do during a severe storm to stay safe.
+
 # ## Resources and References
 # *What resources and references have you used for this project?*
 # 📝 <!-- Answer Below -->
 
-# In[1]:
+# In[112]:
 
 
 # ⚠️ Make sure you run this cell at the end of your notebook before every submission!

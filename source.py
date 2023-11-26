@@ -294,11 +294,81 @@ plt.show()
 
 # This chart shows that the best migitiation method for the state of Alabama is to have a safe room/wind shelter. I had a hard time trying the other migitation methods to show up. To anwser my question above, it would appear to be that the Safe room migation method would appear to be the best method one can do during a severe storm to stay safe.
 
+# 
+
+# In[15]:
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.ensemble import RandomForestClassifier
+
+# Load the data with selected columns
+file_path = 'Data/FEMA_DataSets/HazardMitigationAssistanceMitigatedProperties (2).csv'
+columns_to_use = ['projectIdentifier', 'programArea', 'programFy', 'disasterNumber', 'propertyAction', 'structureType', 'typeOfResidency',
+                  'foundationType', 'county', 'city', 'state', 'stateNumberCode', 'region', 'zip', 'damageCategory', 'actualAmountPaid',
+                  'numberOfProperties', 'id']
+data = pd.read_csv(file_path, usecols=columns_to_use, nrows=5000)
+
+# Define the columns to check for missing values and drop rows with NaN in those columns
+columns_to_check = ['propertyAction', 'structureType', 'typeOfResidency', 'foundationType', 'county', 'state', 'region', 'zip']
+data.dropna(subset=columns_to_check, inplace=True)
+
+columns_to_check = ['disasterNumber', 'damageCategory', 'actualAmountPaid']
+data.dropna(subset=columns_to_check, inplace=True)
+
+# Remove rows with missing values in the 'damageCategory' column
+data.dropna(subset=['damageCategory'], inplace=True)
+
+# Define features and target
+features = data.drop('damageCategory', axis=1)
+target = data['damageCategory']
+
+# Split the data into training and test sets
+train_features, test_features, train_target, test_target = train_test_split(features, target, test_size=0.2, random_state=42)
+
+# Separate numeric and categorical columns
+numeric_cols = train_features.select_dtypes(include='number').columns.tolist()
+categorical_cols = train_features.select_dtypes(exclude='number').columns.tolist()
+
+# Define separate transformers for numeric and categorical features
+numeric_transformer = Pipeline(steps=[
+    ('scaler', StandardScaler())
+])
+
+categorical_transformer = Pipeline(steps=[
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# Combine transformers
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_cols),
+        ('cat', categorical_transformer, categorical_cols)
+    ])
+
+# Create a complete pipeline with the model (Random Forest Classifier)
+model = RandomForestClassifier()
+
+pipeline = Pipeline(steps=[('preprocessor', preprocessor),
+                           ('model', model)])
+
+# Train the model
+pipeline.fit(train_features, train_target)
+
+# Evaluate model performance
+accuracy = pipeline.score(test_features, test_target)
+print(f"Accuracy on test set: {accuracy}")
+
+
 # ## Resources and References
 # *What resources and references have you used for this project?*
 # 📝 <!-- Answer Below -->
 
-# In[112]:
+# In[113]:
 
 
 # ⚠️ Make sure you run this cell at the end of your notebook before every submission!

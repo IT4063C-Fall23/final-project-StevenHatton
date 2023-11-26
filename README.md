@@ -14,7 +14,7 @@
 | ----------------- | -------- |
 | **Setup**         | 10 / 10 |
 | **Execution**     | 20 / 20 |
-| **Documentation** | ... / 10 |
+| **Documentation** | 10 / 10 |
 | **Presentation**  | ... / 30 |
 | **Total**         | ... / 70 |
 

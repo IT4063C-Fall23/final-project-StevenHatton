@@ -22,9 +22,13 @@
 <!-- Edit the following section with your reflection -->
 
 #### What went well?
+Making tables and showing data
 #### What did not go well?
+Trying to show how to use a learning machine
 #### What did you learn?
+What methods are best to use during a natural disaster
 #### What would you do differently next time?
+Spending more time with the machine learning and how to understand it much better
 
 ---
 
